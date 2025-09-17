@@ -5,8 +5,14 @@ import KuromojiAnalyzer from "kuroshiro-analyzer-kuromoji";
 const app = express();
 app.use(express.json());
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const kuroshiro = new Kuroshiro.default();
-const ready = kuroshiro.init(new KuromojiAnalyzer());
+const analyzer = new KuromojiAnalyzer({
+  dictPath: path.join(__dirname, "../node_modules/kuromoji/dict"),
+});
+const ready = kuroshiro.init(analyzer);
 
 app.post("/hiragana", async (req, res) => {
   try {
